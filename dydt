@@ -1,0 +1,6 @@
+function dyy = dydt (t, y)
+  l=5; g=9.81;
+  dyy(1)=y(2);
+  dyy(2)=-g/l*sin(y(1));
+  dyy=dyy';
+endfunction
