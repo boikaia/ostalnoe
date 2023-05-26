@@ -1,0 +1,31 @@
+clear;
+z1= 2; z2= 6;
+z11=[5 z1];
+z22=[10 z2];
+hold on;
+[x,y]=krug(0.3,z1,z2);
+h=plot(x, y, 'c', "linewidth", 15);
+h11=plot(z11, z22, 'k', "linewidth", 1);
+axis square;
+key=1;
+axis([0,10,0,10]);
+pkg load symbolic;
+syms yy(t);
+DE=diff(yy(t),t,2)+(9.81/5)*sin(yy)==0;
+sol=dsolve(DE)
+while key>0,
+  z1(1)=z1(1)+0.5;
+  z2=sin(z1).+7;
+  z11=[5 z1];
+  z22=[10 z2];
+  [x,y]=krug(0.3,z1,z2);
+  set(h,'XData',x,'YData',y);
+  set(h11,'XData',z11,'YData',z22);
+  pause(0.1);
+  drawnow
+  if z1>10
+    key=0;
+  endif
+
+endwhile;
+hold off;
