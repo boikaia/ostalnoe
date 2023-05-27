@@ -1,0 +1,13 @@
+function kor = del_otr (a, b, ep)
+  x=(b+a)/2;
+  while fun(x)*sign(fun(x))>ep,
+    if sign(fun(x)*fun(a))<0,
+      b=x;
+    endif
+     if sign(fun(x)*fun(b))<0,
+      a=x;
+    endif
+    x=(b+a)/2;
+  endwhile
+  kor=x;
+endfunction
