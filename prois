@@ -1,0 +1,3 @@
+function res = prois (x, d)
+  res=(fun(x+d)-fun(x))/d;
+endfunction
