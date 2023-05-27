@@ -1,0 +1,15 @@
+function kor = n1 (a, b, ep)
+  ee=0.001;
+  if prois(prois(a,ee),ee)>0,
+    x0=a;
+  endif
+  if prois(prois(b,ee),ee)<0,
+    x0=b;
+  endif
+  x=x0-fun(x0)/prois(x0,ee);
+  while fun(x)*sign(fun(x))>ep,
+    x0=x;
+    x=x0-fun(x0)/prois(x0,ee);
+  endwhile
+  kor=x;
+endfunction
