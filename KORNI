@@ -1,0 +1,45 @@
+x= -5:0.001:5;
+y=1+(1+sin(x)-cos(x)).^2-(sin(x.*2)-cos(x.*2)-0.2).^2;
+z=zeros(1, length(x));
+a=a1=0; b=b1=0;
+hold on;
+plot(x,y,'y',x,z,'g')
+for i=1:length(x)-1,
+  if y(i)>0 && y(i+1)<0,
+    a=[a,x(i)]; b=[b,x(i+1)];
+  endif
+  if y(i)<0 && y(i+1)>0,
+    a1=[a1,x(i)]; b1=[b1,x(i+1)];
+  endif
+ endfor
+kol=length(a)-1;
+kol1=length(a1)-1;
+
+kor1=zeros(1,kol+kol1);
+kor2=zeros(1,kol+kol1);
+kor3=zeros(1,kol+kol1);
+#tt=ginput(7);
+tic
+for i=2:kol+1,
+  xx=(a(i)+b(i))/2;
+  kor1(i)=fzero(@(x) 1+(1+sin(x)-cos(x)).^2-(sin(x.*2)-cos(x.*2)-0.2).^2, xx);
+  plot(kor1(i),0, 'm*',"markersize",9)
+  kor2(i)=del_otr(a(i), b(i), 0.001);
+  plot(kor2(i),0, 'c*',"markersize",5)
+  kor3(i)= n1(a(i), b(i), 0.001);
+  plot(kor3(i),0, 'b*',"markersize",2)
+endfor
+for i=2:kol1+1,
+  xx=(a1(i)+b1(i))/2;
+  kor1(kol+i-1)=fzero(@(x) 1+(1+sin(x)-cos(x)).^2-(sin(x.*2)-cos(x.*2)-0.2).^2, xx);
+  plot(kor1(kol+i-1),0, 'm*',"markersize",9)
+  kor2(kol+i-1)=del_otr(a1(i), b1(i), 0.001);
+  plot(kor2(kol+i-1),0, 'c*',"markersize",5)
+  kor3(kol+i-1)=del_otr(a1(i), b1(i), 0.001);
+  plot(kor3(kol+i-1),0, 'b*',"markersize",2)
+endfor
+toc
+kor1
+hold off;
+kor2
+kor3
