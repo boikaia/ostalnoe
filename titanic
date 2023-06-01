@@ -1,0 +1,55 @@
+import pandas as pd
+import numpy as np
+import matplotlib as plt
+import seaborn as sns
+data=pd.read_csv("titanic.csv")
+
+
+#таблица: выжили и погибли; мужчины и женщины
+result=data.query('Sex=="male"')
+result1=data.query('Sex=="female"')
+m=result["Survived"].sum()
+f=result1["Survived"].sum()
+m_all=result.shape[0]
+f_all=result1.shape[0]
+df=pd.DataFrame(data=[['мужчины',m,m_all-m],['женщины', f, f_all-f]], columns=[' ','выжили','погибли'])
+df.head()
+#график живые мужчины и женщины
+plt.pyplot.pie([m,f], labels=['male', 'female'], colors=['b','r'], autopct='%1.1f%%')
+res=data.shape
+#график живые и мертвые
+plt.pyplot.pie([res[0]-m-f,m+f], labels=['death', 'live'], colors=['k','y'], autopct='%1.1f%%')
+#таблица по количеству пассажиров в разных классах
+k1=data[data['Pclass']==1].shape[0]
+k2=data[data['Pclass']==2].shape[0]
+k3=data[data['Pclass']==3].shape[0]
+class_table=pd.DataFrame(data=[[1,k1],[2,k2],[3,k3]], columns=['class','number passengers'])
+class_table.head()
+#переименование классов
+data.loc[data['Pclass']==1,'Pclass']='Элита'
+data.loc[data['Pclass']==2,'Pclass']='Средний класс'
+data.loc[data['Pclass']==3,'Pclass']='Работяги'
+data.sample(n=10)
+#добавление столбца Дешево-дорого
+data.assign(Fare_bin=data['Fare'])
+data.loc[data['Fare']>=20,'Fare_bin']='Дорого'
+data.loc[data['Fare']<20,'Fare_bin']='Дешево'
+data.sample(n=10)
+# вывод столбчатой диаграммы по возрасту и выживанию
+sns.histplot(data=data, x="Age", hue="Survived", bins = 80//3)
+#вывод графика общего количества пассажиров и выживших по трем классам
+ll=data.query('Survived==1')
+plt.pyplot.bar(['Элита', 'Средний класс', 'Работяги'],[k1, k2, k3], color='y')
+k1l=ll[ll['Pclass']==1].shape[0]
+k2l=ll[ll['Pclass']==2].shape[0]
+k3l=ll[ll['Pclass']==3].shape[0]
+plt.pyplot.bar(['Элита', 'Средний класс', 'Работяги'],[k1l, k2l, k3l], color='g')
+#скрипочная диаграмма по возрасту всех пассажиров и выживших:
+#сравнение на одном графике
+sns.violinplot(data=data, x="Age", hue="Survived")
+#сравнение на соседних графиках
+coll_1=data['Age']
+coll_2=ll['Age']
+ress=[coll_1, coll_2]
+sns.violinplot(ress)
+
